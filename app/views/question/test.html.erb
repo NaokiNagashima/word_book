@@ -1,0 +1,56 @@
+<script type="text/javascript">
+<!--
+$(function() {
+  var page = 0;
+  function draw() {
+    $('.page').html(page + 1 + '問目');
+    $('.content').hide();
+    $('#hogehoge' + page).show();
+    // $('tr:gt(' + page * 1 + '):lt(10)').show();
+  }
+  // $('#prev').click(function() {
+  //   if (page > 0) {
+  //     page--;
+  //     draw();
+  //   }
+  // });
+  $('.next').click(function() {
+    // if (page < ($('tr').size() - 1) / 10 - 1) {
+      page++;
+      draw();
+      // var r = $('input[name="q'+page+'"]:checked').val();
+      // console.log('input[name="q'+page+'"]:checked');
+      // console.log(page);
+      var r = $('input[name = "sample"]:checked').val();
+      console.log(r);
+    // }
+  });
+  draw();
+});
+// -->
+</script>
+<h1 id="test">単語クイズ</h1>
+<p class="page"></p>
+<% @words.shuffle.first(10).each_with_index do |question, i | %>
+<table class="content" id="hogehoge<%= i %>">
+  <tbody>
+    <% selection = [question.japanese] %>
+    <tr>
+      <td colspan="4"><%= question.english %></td>
+    </tr>
+    <tr>
+      <% @words.reject{|e| e == question}.shuffle.first(3).each do |false_word| %>
+      <% selection.push(false_word.japanese) %>
+      <% end %>
+      <% selection.shuffle.each do |answer| %>
+      <!-- <td><%= radio_button 'q', '', answer %><%= answer %></td> -->
+      <!-- <td><input type="radio" name="q<%= i %>" value="<%= answer %>"><%= answer %></td> -->
+      <td><input type="radio" name="sample" value="<%= answer %>"><%= answer %></td>
+      <% end %>
+    </tr>
+    <tr class="content_btn">
+      <td class="next" colspan="4"><input type="button" value="次へ"></td>
+    </tr>
+  </tbody>
+</table>
+<% end %>
